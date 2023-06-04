@@ -16,7 +16,7 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
     except (FileNotFoundError | FileExistsError) as e:
         raise e(f"Filepath error: {e}")
 
-    # check if txt file, return txt
+    # check if txt file, return txt # todo accept .pdf, doc, docx files. convert into plain text
 
     if file1.suffix != ".txt":
         raise ValueError(f"{file1} is not a .txt file")
