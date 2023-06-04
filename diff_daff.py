@@ -1,8 +1,9 @@
-from difflib import Differ
+from difflib import HtmlDiff
 from pathlib import Path
+import utils
 
 test_file1 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text1.txt'
-test_file2 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text1.txt'
+test_file2 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text2.txt'
 
 
 def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
@@ -29,3 +30,16 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
             return txt_file1.readlines(), txt_file2.readlines()
 
 
+def html_diff(left_txt, right_txt, savedir=Path.cwd()):
+    save_path = Path(savedir).joinpath(f"diff_file_{utils.file_timestamp}.html")
+    html_diff_file = HtmlDiff().make_file(left_txt, right_txt)
+    save_path.write_text(html_diff_file)
+
+
+def main(file1: str, file2: str) -> None:
+    test_texts = get_diff_txt(test_file1, test_file2)
+    html_diff(*test_texts)
+
+
+if __name__ == '__main__':
+    main(test_file1, test_file2)
