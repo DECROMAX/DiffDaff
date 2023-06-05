@@ -1,9 +1,15 @@
+#! /bin/python3.11
+
+"""Utility to diff .txt files"""
+
 from difflib import HtmlDiff
 from pathlib import Path
-import utils
+from datetime import datetime
+from bs4 import BeautifulSoup
 
 test_file1 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text1.txt'
 test_file2 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text2.txt'
+file_timestamp = f"{str(datetime.now().date())}_{str(datetime.now().time()).replace(':', '.')[:8]}"
 
 
 def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
@@ -16,7 +22,7 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
     except (FileNotFoundError | FileExistsError) as e:
         raise e(f"Filepath error: {e}")
 
-    # check if txt file, return txt # todo accept .pdf, doc, docx files. convert into plain text
+    # check if txt file, return txt
 
     if file1.suffix != ".txt":
         raise ValueError(f"{file1} is not a .txt file")
@@ -31,15 +37,15 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
 
 
 def html_diff(left_txt, right_txt, savedir=Path.cwd()):
-    save_path = Path(savedir).joinpath(f"diff_file_{utils.file_timestamp}.html")
-    html_diff_file = HtmlDiff().make_file(left_txt, right_txt)
-    save_path.write_text(html_diff_file)
+    texts = get_diff_txt(left_txt, right_txt)
+    save_path = Path(savedir).joinpath(f"diff_file_{file_timestamp}.html")
+    html_diff_file = HtmlDiff().make_file(*texts)
 
+    soup = BeautifulSoup(html_diff_file, 'html.parser')
+    legend_table = soup.find_all('table')[1]
 
-def main(file1: str, file2: str) -> None:
-    test_texts = get_diff_txt(test_file1, test_file2)
-    html_diff(*test_texts)
+    # save_path.write_text(html_diff_file)
 
 
 if __name__ == '__main__':
-    main(test_file1, test_file2)
+    html_diff(test_file1, test_file2)

@@ -1,1 +1,3 @@
-Utility for outputting diff of two files in pretty HTML
+## Diff Daff
+
+Utility for diffing 2 txt files. 
