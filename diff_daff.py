@@ -43,9 +43,12 @@ def html_diff(left_txt, right_txt, savedir=Path.cwd()):
 
     soup = BeautifulSoup(html_diff_file, 'html.parser')
     legend_table = soup.find_all('table')[1]
+    soup.html.body.insert_before(legend_table)
+    extract_table = soup.find_all('table')[2]
+    soup.extract(extract_table)
 
-    # save_path.write_text(html_diff_file)
-
+    with open(save_path, "w") as file:
+        file.write(str(soup))
 
 if __name__ == '__main__':
     html_diff(test_file1, test_file2)
