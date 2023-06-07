@@ -37,6 +37,7 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
 
 
 def html_diff(left_txt, right_txt, savedir=Path.cwd()):
+    """args: 2 * files to diff, target save directory"""
     texts = get_diff_txt(left_txt, right_txt)
     save_path = Path(savedir).joinpath(f"diff_file_{file_timestamp}.html")
     html_diff_file = HtmlDiff().make_file(*texts)
