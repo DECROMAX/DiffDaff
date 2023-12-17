@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 test_file1 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text1.txt'
 test_file2 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text2.txt'
-file_timestamp = f"{str(datetime.now().date())}_{str(datetime.now().time()).replace(':', '.')[:8]}"
+file_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
 def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
@@ -36,8 +36,29 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
             return txt_file1.readlines(), txt_file2.readlines()
 
 
-def html_diff(left_txt, right_txt, savedir=Path.cwd()):
-    """args: 2 * files to diff, target save directory"""
+def html_diff(left_txt: str, right_txt: str, savedir: Path = Path.home() / "Downloads/") -> None:
+    """
+    Compares two given text files and saves a HTML document displaying the differences in the provided save directory.
+
+    The HTML document uses different colors to show lines which are added, removed or changed. A legend detailing
+    these color codes is placed at the top of the HTML file.
+
+    Parameters
+    ----------
+    left_txt : str
+        Path of the first file to refer for comparison.
+    right_txt : str
+        Path of the second file for comparison.
+    savedir : Path, optional, default is current user's "Downloads" directory
+        The directory where the resulting HTML file will be saved.
+
+    Returns
+    -------
+    None
+        This function doesn't return any value. It just saves an HTML report of the differences in
+        two given files in the specified directory.
+
+    """
     texts = get_diff_txt(left_txt, right_txt)
     save_path = Path(savedir).joinpath(f"diff_file_{file_timestamp}.html")
     html_diff_file = HtmlDiff().make_file(*texts)

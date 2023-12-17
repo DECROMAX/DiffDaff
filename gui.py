@@ -4,14 +4,20 @@ import PySimpleGUI as sg
 sg.theme('Reddit')
 
 layout = [
-    [sg.Text('File 1'), sg.FileBrowse(file_types=[('CSV', '*.csv')])]
+    [sg.FileBrowse(file_types=[('TXT', '*.txt')]), sg.Text('File 1')],
+    [sg.FileBrowse(file_types=[('TXT', '*.txt')]), sg.Text('File 2')],
+    [sg.Button('Execute Diff', key='execute_diff')]
 
 ]
 
-def main_gui():
+
+def main_gui() -> None:
     window = sg.Window('DiffDaff', layout=layout)
 
     while True:
         event, values = window.Read()
+        if event == 'execute_diff':
+            print('test')
 
-main_gui()
+if __name__ == '__main__':
+    main_gui()
