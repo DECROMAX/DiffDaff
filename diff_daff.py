@@ -22,6 +22,10 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
     except (FileNotFoundError | FileExistsError) as e:
         raise e(f"Filepath error: {e}")
 
+    # check if values are None
+    if file1 is None and file2 is None:
+        raise FileNotFoundError("One or both files is not specified")
+
     # check if txt file, return txt
 
     if file1.suffix != ".txt":
