@@ -1,4 +1,4 @@
-#! /bin/python3.11
+#! /bin/python3
 
 """Utility to diff .txt files"""
 

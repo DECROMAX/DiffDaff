@@ -1,3 +1,5 @@
+#! /bin/python3
+
 from diff_daff import html_diff
 import PySimpleGUI as sg
 
@@ -8,7 +10,8 @@ layout = [
     [sg.Push()],
     [sg.FileBrowse(file_types=[('TXT', '*.txt')], key='file_path_1'), sg.Text('File 1')],
     [sg.FileBrowse(file_types=[('TXT', '*.txt')], key='file_path_2'), sg.Text('File 2')],
-    [sg.Button('Execute Diff', key='-execute_diff-')]
+    [sg.Push()],
+    [sg.Button('Execute Diff', key='-execute_diff-'), sg.Push(), sg.Button('Clear Values', key='-clear-')]
 
 ]
 
@@ -26,9 +29,8 @@ def main_gui() -> None:
             try:
                 save_diff = html_diff(values['file_path_1'], values['file_path_2'])
                 sg.popup(f'Diff saved at: {str(save_diff)}', title='Diff Saved')
-            except BaseException as e:
-                raise e
-                # sg.PopupError(f'Error: {e}')
+            except ValueError as e:
+                sg.PopupError(f'Error: {e}')
 
 
 if __name__ == '__main__':
