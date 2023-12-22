@@ -7,8 +7,8 @@ from pathlib import Path
 from datetime import datetime
 from bs4 import BeautifulSoup
 
-test_file1 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text1.txt'
-test_file2 = '/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text2.txt'
+test_file1 = "/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text1.txt"
+test_file2 = "/home/ryan/PycharmProjects/diff_daff/test_text/jekyll_hyde_test_text2.txt"
 file_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
@@ -19,7 +19,7 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
     try:
         file1 = Path(filepath1)
         file2 = Path(filepath2)
-    except (FileNotFoundError | FileExistsError) as e:
+    except FileNotFoundError | FileExistsError as e:
         raise e(f"Filepath error: {e}")
 
     # check if values are None
@@ -40,9 +40,11 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
             return txt_file1.readlines(), txt_file2.readlines()
 
 
-def html_diff(left_txt: str, right_txt: str, savedir: Path = Path.home() / "Downloads/") -> Path:
+def html_diff(
+    left_txt: str, right_txt: str, savedir: Path = Path.home() / "Downloads/"
+) -> Path:
     """
-    Compares two given text files and saves a HTML document displaying the differences in the provided save directory.
+    Compares two given text files and saves a HTML document displaying the differences to save directory (Downloads).
 
     The HTML document uses different colors to show lines which are added, removed or changed. A legend detailing
     these color codes is placed at the top of the HTML file.
@@ -53,8 +55,6 @@ def html_diff(left_txt: str, right_txt: str, savedir: Path = Path.home() / "Down
         Path of the first file to refer for comparison.
     right_txt : str
         Path of the second file for comparison.
-    savedir : Path, optional, default is current user's "Downloads" directory
-        The directory where the resulting HTML file will be saved.
 
     Returns
     -------
@@ -66,15 +66,16 @@ def html_diff(left_txt: str, right_txt: str, savedir: Path = Path.home() / "Down
     save_path = Path(savedir).joinpath(f"diff_file_{file_timestamp}.html")
     html_diff_file = HtmlDiff().make_file(*texts)
 
-    soup = BeautifulSoup(html_diff_file, 'html.parser')
-    legend_table = soup.find_all('table')[1]
+    soup = BeautifulSoup(html_diff_file, "html.parser")
+    legend_table = soup.find_all("table")[1]
     soup.html.body.insert_before(legend_table)
-    extract_table = soup.find_all('table')[2]
+    extract_table = soup.find_all("table")[2]
     soup.extract(extract_table)
 
     with open(save_path, "w") as file:
         file.write(str(soup))
         return save_path
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     html_diff(test_file1, test_file2)
