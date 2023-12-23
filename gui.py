@@ -5,6 +5,7 @@ import PySimpleGUI as sg
 
 sg.theme("Reddit")
 
+# pad variables & default button size
 file_browser_pad = (10, 10)
 instructions_button_pad = (10, 10)
 execute_diff_button_pad = (10, 20)
@@ -27,12 +28,12 @@ layout = [
             file_types=[("TXT", "*.txt")],
             button_text="Right text file",
             size=button_size,
-            key="file_path_1",
-            target="input_file_path_1",
+            key="-file_path_1-",
+            target="-input_-file_path_1-",
             pad=file_browser_pad,
         ),
         sg.Input(
-            key="input_file_path_1", size=(50, 1), enable_events=True, readonly=True
+            key="-input_-file_path_1-", size=(50, 1), enable_events=True, readonly=True
         ),
     ],
     [
@@ -40,11 +41,13 @@ layout = [
             file_types=[("TXT", "*.txt")],
             button_text="Left text file",
             size=button_size,
-            key="file_path_2",
-            target="input_file_path_2",
+            key="-file_path_2-",
+            target="-input_-file_path_2-",
             pad=file_browser_pad,
         ),
-        sg.Input(key="file_path_2", size=(50, 1), enable_events=True, readonly=True),
+        sg.Input(
+            key="-input_-file_path_2-", size=(50, 1), enable_events=True, readonly=True
+        ),
     ],
     [sg.HorizontalSeparator()],
     [
@@ -69,14 +72,19 @@ def main_gui() -> None:
         event, values = window.Read()
         if event == sg.WIN_CLOSED:
             break
-        if event == "-display_instructions-":
+        elif event == "-display_instructions-":
             sg.popup(html_diff.__doc__, title="Instructions")
-        if event == "-execute_diff-":
+        elif event == "-execute_diff-":
             try:
-                save_diff = html_diff(values["file_path_1"], values["file_path_2"])
+                save_diff = html_diff(values["-file_path_1-"], values["-file_path_2-"])
                 sg.popup(f"Diff saved at: {str(save_diff)}", title="Diff Saved")
             except ValueError as e:
                 sg.PopupError(f"Error: {e}")
+        elif event == "-clear-":
+            window["-input_-file_path_1-"].update("")
+            window["-input_-file_path_2-"].update("")
+        else:
+            pass  # do nothing -> loop
 
 
 if __name__ == "__main__":

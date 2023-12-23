@@ -23,21 +23,20 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
         raise e(f"Filepath error: {e}")
 
     # check if values are None
-    if file1 is None and file2 is None:
-        raise FileNotFoundError("One or both files is not specified")
+    if not filepath1 or not filepath2:
+        raise ValueError("One or both files are not specified")
 
     # check if txt file, return txt
-
     if file1.suffix != ".txt":
         raise ValueError(f"{file1} is not a .txt file")
     elif file2.suffix != ".txt":
         raise ValueError(f"{file2} is not a txt file")
-    else:
-        with (
-            open(file1) as txt_file1,
-            open(file2) as txt_file2,
-        ):
-            return txt_file1.readlines(), txt_file2.readlines()
+
+    with (
+        open(file1) as txt_file1,
+        open(file2) as txt_file2,
+    ):
+        return txt_file1.readlines(), txt_file2.readlines()
 
 
 def html_diff(
@@ -55,11 +54,15 @@ def html_diff(
         Path of the first file to refer for comparison.
     right_txt : str
         Path of the second file for comparison.
+    savedir : Path
+        Path to save the diff
+
 
     Returns
     -------
     Path
         This function returns the path where html diff file is saved (Default Path.home()/Downloads).
+
 
     """
     texts = get_diff_txt(left_txt, right_txt)
