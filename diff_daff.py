@@ -39,9 +39,7 @@ def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
         return txt_file1.readlines(), txt_file2.readlines()
 
 
-def html_diff(
-    left_txt: str, right_txt: str, savedir: Path = Path.home() / "Downloads/"
-) -> Path:
+def html_diff(left_txt: str, right_txt: str) -> Path:
     """
     Compares two given text files and saves a HTML document displaying the differences to save directory (Downloads).
 
@@ -54,8 +52,6 @@ def html_diff(
         Path of the first file to refer for comparison.
     right_txt : str
         Path of the second file for comparison.
-    savedir : Path
-        Path to save the diff
 
 
     Returns
@@ -63,8 +59,8 @@ def html_diff(
     Path
         This function returns the path where html diff file is saved (Default Path.home()/Downloads).
 
-
     """
+    savedir = Path.home() / "Downloads/"
     texts = get_diff_txt(left_txt, right_txt)
     save_path = Path(savedir).joinpath(f"diff_file_{file_timestamp}.html")
     html_diff_file = HtmlDiff().make_file(*texts)
