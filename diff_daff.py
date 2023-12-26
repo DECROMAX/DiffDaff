@@ -13,7 +13,10 @@ file_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 
 def get_diff_txt(filepath1: str, filepath2: str) -> tuple[list[str], list[str]]:
-    """:arg 2 * string file paths of text files to diff, :returns tuple of str"""
+
+    """
+    gets text for two .txt files
+    :arg filepath1:  left text filepath, :arg filepath2: right text filepath :returns tuple of str"""
 
     # check if file exists
     try:
