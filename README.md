@@ -1,3 +1,3 @@
 ## Diff Daff
 
-Utility for diffing 2 txt files. 
+Utility for pretty diffing 2 txt files. 
